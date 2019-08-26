@@ -5,13 +5,23 @@ import Constants from 'expo-constants';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import MapView from 'react-native-maps';
-
-
+import axios from 'axios';
 export default class App extends Component {
   state = {
     location: null,
     errorMessage: null,
   };
+
+  location = []
+
+  componentDidMount() {
+    // current ip that are you use
+    axios.get('http://172.20.10.6:3000/latlon')
+      .then(res => {
+        this.location = res.data;
+        console.log(this.location)
+      })
+  }
 
   componentWillMount() {
     if (Platform.OS === 'android' && !Constants.isDevice) {
@@ -33,8 +43,6 @@ export default class App extends Component {
 
     let location = await Location.getCurrentPositionAsync({});
     this.setState({ location });
-    console.log(location.coords.latitude)
-    console.log(location.coords.longitude)
   };
 
   render() {
@@ -48,31 +56,14 @@ export default class App extends Component {
       longitude = parseFloat(this.state.location.coords.longitude);
     }
 
-    let locations = {
-      markers: [{
-        title: 'Houve um assalto',
-        coordinates: {
-          latitude: -23.175993,
-          longitude: -45.8565098
-        },
-      },
-      {
-        title: 'Houve um assalto',
-        coordinates: {
-          latitude: -23.1745971,
-          longitude: -45.8547501
-        },  
-      }]
-    }
-
     return (
       <MapView
         style={{ flex: 1 }}
         region={{
           latitude: parseFloat(latitude),
           longitude: parseFloat(longitude),
-          latitudeDelta: 0.009,
-          longitudeDelta: 0.009,
+          latitudeDelta: 0.02,
+          longitudeDelta: 0.02,
         }}
       >
 
@@ -84,9 +75,10 @@ export default class App extends Component {
           title={"Minha Localização"}
           description={"Estou aqui"}
         />
-
-      {locations.markers.map(marker => (
+        {this.location.map(marker => (
           <MapView.Marker 
+            // need to fix error of duplicate key
+            key={marker}
             coordinate={marker.coordinates}
             title={marker.title}
             image={require('./icon/stolecarmin.png')}
