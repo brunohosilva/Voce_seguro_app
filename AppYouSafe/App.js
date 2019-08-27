@@ -15,8 +15,8 @@ export default class App extends Component {
   location = []
 
   componentDidMount() {
-    // current ip that are you use
-    axios.get('http://172.20.10.6:3000/latlon')
+    // current ip network that are you use // 
+    axios.get('http://192.168.15.19:3000/latlon')
       .then(res => {
         this.location = res.data;
         console.log(this.location)
@@ -75,10 +75,9 @@ export default class App extends Component {
           title={"Minha Localização"}
           description={"Estou aqui"}
         />
-        {this.location.map(marker => (
+        {this.location.map((marker, id) => (
           <MapView.Marker 
-            // need to fix error of duplicate key
-            key={marker}
+            key={id}
             coordinate={marker.coordinates}
             title={marker.title}
             image={require('./icon/stolecarmin.png')}
