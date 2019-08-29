@@ -1,20 +1,24 @@
+const csv = require('csv-parser')
+const fs = require('fs')
+const results = [];
+
 var express = require('express');
 var app = express();
 
-const latlon =[{
-  title: 'Houve um assalto aqui!!',
-  coordinates: {
-    latitude: -23.175993,
-    longitude: -45.8565098
-  },
-},
-{
-  title: 'Houve um assalto aqui!!',
-  coordinates: {
-    latitude: -23.1745971,
-    longitude: -45.8547501
-  },  
-}]
+fs.createReadStream('data.csv')
+  .pipe(csv({separator: ';'}))
+  .on('data', (data) => results.push(data))
+  .on('end', () => {
+    results.map((x) => {
+      const latlon = [{
+        "title": "Assalto",
+        coordinates:{
+          "latitude": x.LATITUDE,
+          "longitude": x.LONGITUDE
+        }
+      }]
+    })
+  });
 
 app.get('/latlon', function (req, res) {
   res.send(latlon);
