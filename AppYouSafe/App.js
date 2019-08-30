@@ -16,7 +16,7 @@ export default class App extends Component {
 
   componentDidMount() {
     // current ip network that are you use // 
-    axios.get('http://192.168.15.19:3000/latlon')
+    axios.get('http://172.20.10.6:3000/latlon')
       .then(res => {
         this.location = res.data;
         console.log(this.location)
