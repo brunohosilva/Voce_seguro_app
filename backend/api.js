@@ -14,6 +14,8 @@ function getLatLon() {
         const resultLatLon =  results.map((position) => {
           const latitude = position.LATITUDE.replace(/\,/g,'.')
           const longitude = position.LONGITUDE.replace(/\,/g,'.')
+          if(position.LATITUDE !== null){
+            console.log(position.LATITUDE)
             const latlon = {
               "title": "Furto",
               coordinates: {
@@ -22,7 +24,7 @@ function getLatLon() {
               }
             }
             return latlon
-      
+          }        
         })
         res(resultLatLon)
       });
