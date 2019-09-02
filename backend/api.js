@@ -6,25 +6,25 @@ var express = require('express');
 var app = express();
 
 function getLatLon() {
-  return new Promise((resolve) => {
+  return new Promise((res) => {
     fs.createReadStream('./data/data.csv')
       .pipe(csv({ separator: ';' }))
       .on('data', (data) => results.push(data))
       .on('end', () => {
-        
         const resultLatLon =  results.map((position) => {
           const latitude = position.LATITUDE.replace(/\,/g,'.')
           const longitude = position.LONGITUDE.replace(/\,/g,'.')
-          const latlon = {
-            "title": "Assalto",
-            coordinates: {
-              "latitude": parseFloat(latitude),
-              "longitude": parseFloat(longitude)
+            const latlon = {
+              "title": "Furto",
+              coordinates: {
+                "latitude": parseFloat(latitude),
+                "longitude": parseFloat(longitude)
+              }
             }
-          }
-          return latlon
+            return latlon
+      
         })
-        resolve(resultLatLon)
+        res(resultLatLon)
       });
   })
 }
