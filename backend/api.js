@@ -1,12 +1,21 @@
-const CarPositon = require("./controller/CarPositionController.js"); 
+const CarSteal = require("./controller/CarStealController.js"); 
+const CarRob = require("./controller/CarRobController.js"); 
+const PhoneSteal = require("./controller/PhoneStealController.js");
+const PhoneRob = require("./controller/PhoneRobController.js"); 
 
 var express = require('express');
 var app = express();
 
-app.get('/latlon', CarPositon.getLatLon);
+
+app.get('/latlonCarSteal', CarSteal.getLatLonCarSteal);
+app.get('/latlonCarRob', CarRob.getLatLonCarRob);
+app.get('/latlonPhoneSteal', PhoneSteal.getLatLonPhoneSteal);
+app.get('/latlonPhoneRob', PhoneRob.getLatLonPhoneRob);
+
+
 
 app.listen(3000, function() {
-  console.log('local server latlon in port :3000!');
+  console.log('local server in port :3000!');
 });
 
 module.exports = app

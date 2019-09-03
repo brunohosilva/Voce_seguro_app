@@ -2,8 +2,8 @@ const csv = require('csv-parser')
 const fs = require('fs')
 const results = [];
 
-exports.getLatLon = function(req, res) {
-  fs.createReadStream('./data/data.csv')
+exports.getLatLonPhoneRob = function(req, res) {
+  fs.createReadStream('./data/carsteal.csv')
     .pipe(csv({ separator: ';' }))
     .on('data', (data) => results.push(data))
     .on('end', () => {
@@ -12,7 +12,7 @@ exports.getLatLon = function(req, res) {
         const longitude = position.LONGITUDE.replace(/\,/g, '.')
         if (position.LATITUDE !== null) {
           const latlon = {
-            "title": "Furto",
+            "title": "Roubo de Celular",
             coordinates: {
               "latitude": parseFloat(latitude),
               "longitude": parseFloat(longitude)
