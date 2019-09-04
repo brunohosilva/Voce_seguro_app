@@ -3,6 +3,7 @@ const fs = require('fs')
 const results = [];
 
 exports.getLatLonPhoneRob = function(req, res) {
+  return new Promise((resolve) => {
   fs.createReadStream('./data/carsteal.csv')
     .pipe(csv({ separator: ';' }))
     .on('data', (data) => results.push(data))
@@ -22,6 +23,7 @@ exports.getLatLonPhoneRob = function(req, res) {
           return latlon
         }
       })
-      res.send(resultLatLon)
+      res.send(resolve(resultLatLon))
     });
+  })
 }
