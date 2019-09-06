@@ -19,7 +19,7 @@ export default class App extends Component {
 
   componentDidMount() {
     // current ip network that are you use // 
-    axios.get('http://192.168.15.10:3000/latlonCarSteal')
+    axios.get('http://192.168.15.10:3000/teste')
       .then(res => {
         this.location = res.data;
         console.log(this.location)
@@ -52,6 +52,10 @@ export default class App extends Component {
     this.setState({ isModalVisible: !this.state.isModalVisible });
   };
 
+  switchMapType = () => {
+    this.setState({ mapType: this.state.mapType === 'satellite' ? 'standard' : 'satellite' });
+  }
+
   render() {
     let latitude = 0;
     let longitude = 0;
@@ -70,6 +74,7 @@ export default class App extends Component {
             width: "100%",
             height: "100%"
           }}
+          mapType={this.state.mapType}
           region={{
             latitude: parseFloat(latitude),
             longitude: parseFloat(longitude),
@@ -95,27 +100,31 @@ export default class App extends Component {
             />
           ))}
         </MapView>
-        <View style={styles.btn_container}>
-          <View style={styles.btn_info}>
-            <Icon
-              name='info-circle'
-              type='font-awesome'
-              onPress={this.toggleModal} />
-            <Modal isVisible={this.state.isModalVisible}>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.info}>No último mês foram relatados 20.999 furtos de carros</Text>
-                <Button style={styles.btnCloseModal}
-                  icon={{
-                    name:'times-circle',
-                    type:'font-awesome',
-                    color:'#FFFFFF'
-                  }}
-                  type="clear"
-                  onPress={this.toggleModal}
-                />
-              </View>
-            </Modal>
-          </View>
+        <View style={styles.btn_info}>
+          <Icon
+            name='info-circle'
+            type='font-awesome'
+            onPress={this.toggleModal} />
+          <Modal isVisible={this.state.isModalVisible}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.info}>No último mês foram relatados 20.999 furtos de carros</Text>
+              <Button style={styles.btnCloseModal}
+                icon={{
+                  name: 'times-circle',
+                  type: 'font-awesome',
+                  color: '#FFFFFF'
+                }}
+                type="clear"
+                onPress={this.toggleModal}
+              />
+            </View>
+          </Modal>
+        </View>
+        <View style={styles.btn_layer}>
+          <Icon
+            name='map'
+            type='font-awesome'
+            onPress={this.switchMapType} />
         </View>
       </View>
     );
@@ -129,12 +138,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  btn_container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
   btn_info: {
     flex: 1,
     justifyContent: 'center',
@@ -143,8 +146,23 @@ const styles = StyleSheet.create({
     bottom: 10,
     padding: 5,
     height: 50,
-    width: 50,  //The Width must be the same as the height
-    borderRadius: 400, //Then Make the Border Radius twice the size of width or Height   
+    width: 50,
+    borderRadius: 400,
+    backgroundColor: '#FFFFFF',
+    borderColor: '#ddd',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+  },
+  btn_layer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 10,
+    left: 30,
+    padding: 5,
+    height: 50,
+    width: 50,
+    borderRadius: 400,
     backgroundColor: '#FFFFFF',
     borderColor: '#ddd',
     shadowOffset: { width: 0, height: 2 },
@@ -160,6 +178,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: '50%',
     padding: 30
+    
   }
 });
 
