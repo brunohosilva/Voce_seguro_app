@@ -24,4 +24,6 @@ exports.getLatLonCarSteal = function(req, res) {
       })
       res.send(resultLatLon)
     });
+    console.log(latlon)
 }
+
