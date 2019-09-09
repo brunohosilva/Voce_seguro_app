@@ -8,6 +8,8 @@ import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import MapView from 'react-native-maps';
 import axios from 'axios';
+// import MapView from 'react-native-map-clustering';
+// import { Marker } from 'react-native-maps';
 export default class App extends Component {
   state = {
     location: null,
@@ -19,10 +21,10 @@ export default class App extends Component {
 
   componentDidMount() {
     // current ip network that are you use // 
-    axios.get('http://192.168.15.10:3000/teste')
+    axios.get('http://192.168.3.117:3000/latlonCarSteal')
       .then(res => {
         this.location = res.data;
-        console.log(this.location)
+        // console.log(this.location)
       })
   }
 
@@ -56,6 +58,11 @@ export default class App extends Component {
     this.setState({ mapType: this.state.mapType === 'satellite' ? 'standard' : 'satellite' });
   }
 
+  // criar função pra mostrar a posicão atual  quando clicar
+  showCurrentLocation = () => {
+    console.log("click")
+  }
+
   render() {
     let latitude = 0;
     let longitude = 0;
@@ -78,8 +85,8 @@ export default class App extends Component {
           region={{
             latitude: parseFloat(latitude),
             longitude: parseFloat(longitude),
-            latitudeDelta: 0.02,
-            longitudeDelta: 0.02,
+            latitudeDelta: 0.04,
+            longitudeDelta: 0.04,
           }}
         >
 
@@ -90,6 +97,7 @@ export default class App extends Component {
             }}
             title={"Minha Localização"}
             description={"Estou aqui"}
+            image={require('./icon/currentlocation2.png')}
           />
           {this.location.map((marker, id) => (
             <MapView.Marker
@@ -100,7 +108,7 @@ export default class App extends Component {
             />
           ))}
         </MapView>
-        <View style={styles.btn_info}>
+        <View style={styles.btnShowInfo}>
           <Icon
             name='info-circle'
             type='font-awesome'
@@ -120,11 +128,17 @@ export default class App extends Component {
             </View>
           </Modal>
         </View>
-        <View style={styles.btn_layer}>
+        <View style={styles.btnChangeLayer}>
           <Icon
             name='map'
             type='font-awesome'
             onPress={this.switchMapType} />
+        </View>
+        <View style={styles.btnShowCurrentLocation}>
+          <Icon
+            name='location-arrow'
+            type='font-awesome'
+            onPress={this.showCurrentLocation} />
         </View>
       </View>
     );
@@ -138,7 +152,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  btn_info: {
+  btnShowInfo: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -153,12 +167,26 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
   },
-  btn_layer: {
+  btnChangeLayer: {
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
     bottom: 10,
     left: 30,
+    padding: 5,
+    height: 50,
+    width: 50,
+    borderRadius: 400,
+    backgroundColor: '#FFFFFF',
+    borderColor: '#ddd',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+  },
+  btnShowCurrentLocation: {
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 10,
+    right: 30,
     padding: 5,
     height: 50,
     width: 50,
@@ -178,7 +206,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: '50%',
     padding: 30
-    
+
   }
 });
 
