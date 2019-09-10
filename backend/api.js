@@ -13,7 +13,6 @@ app.get('/latlonPhoneSteal', PhoneSteal.getLatLonPhoneSteal);
 app.get('/latlonPhoneRob', PhoneRob.getLatLonPhoneRob);
 
 
-
 app.listen(3000, function() {
   console.log('local server in port :3000!');
 });
