@@ -1,4 +1,7 @@
 var mysql = require('mysql');
+const csv = require('csv-parser')
+const fs = require('fs')
+const results = [];
 
 exports.connectDataBase = function (req, res) {
   const con = mysql.createConnection({
@@ -8,11 +11,21 @@ exports.connectDataBase = function (req, res) {
     database: 'youSave'
   });
 
-  con.connect(function (err) {
-    if (err) throw err;
-    con.query("SELECT latitude,longitude FROM crimes", function (err, result, fields) {
-      if (err) throw err;
-      res.send(result);
-    });
-  });
+  fs.createReadStream('./data/carsteal.csv')
+    .pipe(csv({ separator: ';' }))
+    .on('data', (data) => results.push(data))
+    .on('end', () => {
+      const resultLatLon = results.map((position) => {
+        const latitude = position.LATITUDE.replace(/\,/g, '.')
+        const longitude = position.LONGITUDE.replace(/\,/g, '.')
+        const rua = position.LOGRADOURO
+        if (position.LATITUDE !== null) {
+          console.log(longitude,latitude,rua)
+          con.query(`INSERT INTO crimes(latitude,longitude) VALUES(${parseFloat(latitude)},${parseFloat(longitude)})`, function (err, result, fields) {
+            if(err) throw err;
+            console.log(result);
+          })
+        }
+      })
+    })
 }
