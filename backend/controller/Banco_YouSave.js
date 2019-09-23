@@ -20,9 +20,9 @@ exports.connectDataBase = function (req, res) {
         const longitude = position.LONGITUDE.replace(/\,/g, '.')
         const rua = position.LOGRADOURO
         if (position.LATITUDE !== null) {
-          console.log(longitude,latitude,rua)
-          con.query(`INSERT INTO crimes(latitude,longitude) VALUES(${parseFloat(latitude)},${parseFloat(longitude)})`, function (err, result, fields) {
-            if(err) throw err;
+          console.log(longitude, latitude, rua)
+          con.query("INSERT INTO crimes(latitude,longitude,crime) VALUES(${parseFloat(latitude)},${parseFloat(longitude)},'furto de veiculo')", function (err, result, fields) {
+            if (err) throw err;
             console.log(result);
           })
         }
