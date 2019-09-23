@@ -8,6 +8,8 @@ import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import MapView from 'react-native-maps';
 import axios from 'axios';
+// import MapView from 'react-native-map-clustering';
+// import { Marker } from 'react-native-maps';
 export default class App extends Component {
   state = {
     location: null,
@@ -19,10 +21,14 @@ export default class App extends Component {
 
   componentDidMount() {
     // current ip network that are you use // 
+<<<<<<< HEAD
     axios.get('http://192.168.0.173:3000/latlonCarRob')
+=======
+    axios.get('http://192.168.3.117:3000/latlonCarSteal')
+>>>>>>> 71586076649de7f11581139ba3e6e44565823db7
       .then(res => {
         this.location = res.data;
-        console.log(this.location)
+        // console.log(this.location)
       })
   }
 
@@ -52,6 +58,15 @@ export default class App extends Component {
     this.setState({ isModalVisible: !this.state.isModalVisible });
   };
 
+  switchMapType = () => {
+    this.setState({ mapType: this.state.mapType === 'satellite' ? 'standard' : 'satellite' });
+  }
+
+  // criar função pra mostrar a posicão atual  quando clicar
+  showCurrentLocation = () => {
+    console.log("click")
+  }
+
   render() {
     let latitude = 0;
     let longitude = 0;
@@ -70,11 +85,12 @@ export default class App extends Component {
             width: "100%",
             height: "100%"
           }}
+          mapType={this.state.mapType}
           region={{
             latitude: parseFloat(latitude),
             longitude: parseFloat(longitude),
-            latitudeDelta: 0.02,
-            longitudeDelta: 0.02,
+            latitudeDelta: 0.04,
+            longitudeDelta: 0.04,
           }}
         >
 
@@ -85,6 +101,7 @@ export default class App extends Component {
             }}
             title={"Minha Localização"}
             description={"Estou aqui"}
+            image={require('./icon/currentlocation2.png')}
           />
           {this.location.map((marker, id) => (
             <MapView.Marker
@@ -95,27 +112,37 @@ export default class App extends Component {
             />
           ))}
         </MapView>
-        <View style={styles.btn_container}>
-          <View style={styles.btn_info}>
-            <Icon
-              name='info-circle'
-              type='font-awesome'
-              onPress={this.toggleModal} />
-            <Modal isVisible={this.state.isModalVisible}>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.info}>No último mês foram relatados 20.999 furtos de carros</Text>
-                <Button style={styles.btnCloseModal}
-                  icon={{
-                    name:'times-circle',
-                    type:'font-awesome',
-                    color:'#FFFFFF'
-                  }}
-                  type="clear"
-                  onPress={this.toggleModal}
-                />
-              </View>
-            </Modal>
-          </View>
+        <View style={styles.btnShowInfo}>
+          <Icon
+            name='info-circle'
+            type='font-awesome'
+            onPress={this.toggleModal} />
+          <Modal isVisible={this.state.isModalVisible}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.info}>No último mês foram relatados 20.999 furtos de carros</Text>
+              <Button style={styles.btnCloseModal}
+                icon={{
+                  name: 'times-circle',
+                  type: 'font-awesome',
+                  color: '#FFFFFF'
+                }}
+                type="clear"
+                onPress={this.toggleModal}
+              />
+            </View>
+          </Modal>
+        </View>
+        <View style={styles.btnChangeLayer}>
+          <Icon
+            name='map'
+            type='font-awesome'
+            onPress={this.switchMapType} />
+        </View>
+        <View style={styles.btnShowCurrentLocation}>
+          <Icon
+            name='location-arrow'
+            type='font-awesome'
+            onPress={this.showCurrentLocation} />
         </View>
       </View>
     );
@@ -129,13 +156,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  btn_container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-  btn_info: {
+  btnShowInfo: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -143,8 +164,37 @@ const styles = StyleSheet.create({
     bottom: 10,
     padding: 5,
     height: 50,
-    width: 50,  //The Width must be the same as the height
-    borderRadius: 400, //Then Make the Border Radius twice the size of width or Height   
+    width: 50,
+    borderRadius: 400,
+    backgroundColor: '#FFFFFF',
+    borderColor: '#ddd',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+  },
+  btnChangeLayer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 10,
+    left: 30,
+    padding: 5,
+    height: 50,
+    width: 50,
+    borderRadius: 400,
+    backgroundColor: '#FFFFFF',
+    borderColor: '#ddd',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+  },
+  btnShowCurrentLocation: {
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 10,
+    right: 30,
+    padding: 5,
+    height: 50,
+    width: 50,
+    borderRadius: 400,
     backgroundColor: '#FFFFFF',
     borderColor: '#ddd',
     shadowOffset: { width: 0, height: 2 },
@@ -160,6 +210,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: '50%',
     padding: 30
+
   }
 });
 
