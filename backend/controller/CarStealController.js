@@ -18,7 +18,6 @@ exports.getLatLonCarSteal = function(req, res) {
               "longitude": parseFloat(longitude)
             }
           }
-          console.log(latlon)
           return latlon
         }
       })

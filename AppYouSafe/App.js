@@ -8,8 +8,6 @@ import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import MapView from 'react-native-maps';
 import axios from 'axios';
-// import MapView from 'react-native-map-clustering';
-// import { Marker } from 'react-native-maps';
 export default class App extends Component {
   state = {
     location: null,
@@ -21,10 +19,9 @@ export default class App extends Component {
 
   componentDidMount() {
     // current ip network that are you use // 
-    axios.get('http://192.168.3.117:3000/latlonCarSteal')
+    axios.get('http://172.20.10.6:3000/latlonCarSteal')
       .then(res => {
         this.location = res.data;
-        // console.log(this.location)
       })
   }
 
@@ -59,7 +56,7 @@ export default class App extends Component {
   }
 
   // criar função pra mostrar a posicão atual  quando clicar
-  showCurrentLocation = () => {
+  showCurrentLocation = () => { 
     console.log("click")
   }
 
