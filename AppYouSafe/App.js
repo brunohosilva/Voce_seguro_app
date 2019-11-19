@@ -1,14 +1,23 @@
 
 import React, { Component } from 'react';
-import { Platform, Text, View, StyleSheet } from 'react-native';
+import { Platform, Text, View, StyleSheet, SafeAreaView } from 'react-native';
 import Modal from "react-native-modal";
 import { Icon, Button } from 'react-native-elements';
 import Constants from 'expo-constants';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import MapView from 'react-native-maps';
+import type { Region } from 'react-native-maps';
 import axios from 'axios';
+
+type Props = {};
+type State = { region: ?Region, }
+
 export default class App extends Component {
+  constructor(props: Props){
+    super(props);
+    this.state = {region: null};
+  }
   state = {
     location: null,
     errorMessage: null,
@@ -19,7 +28,7 @@ export default class App extends Component {
 
   componentDidMount() {
     // current ip network that are you use // 
-    axios.get('http://172.20.10.6:3000/latlonCarSteal')
+    axios.get('http://192.168.43.128:3000/latlonCarSteal')
       .then(res => {
         this.location = res.data;
       })
@@ -55,10 +64,16 @@ export default class App extends Component {
     this.setState({ mapType: this.state.mapType === 'satellite' ? 'standard' : 'satellite' });
   }
 
-  // criar função pra mostrar a posicão atual  quando clicar
-  showCurrentLocation = () => { 
-    console.log("click")
+  current_Location = () => {
+    const mystate = {
+      latitude: parseFloat(this.state.location.coords.latitude),
+      longitude: parseFloat(this.state.location.coords.longitude),
+      longitudeDelta: 0.04,
+      latitudeDelta: 0.04
+    }
   }
+  // criar função pra mostrar a posicão atual  quando clicar
+  showCurrentLocation = (): void => this.setState ({region: this.current_Location()});
 
   render() {
     let latitude = 0;
@@ -75,8 +90,8 @@ export default class App extends Component {
       <View style={styles.container}>
         <MapView
           style={{
-            width: "100%",
-            height: "100%"
+            width: "150%",
+            height: "200%"
           }}
           mapType={this.state.mapType}
           region={{
@@ -206,4 +221,3 @@ const styles = StyleSheet.create({
 
   }
 });
-
