@@ -1,24 +1,15 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet,
   Text,
-  View,
+  StyleSheet,
   Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Drawer, Container, Header} from 'native-base';
+import { Drawer, Container, Header, View} from 'native-base';
 import Map from './src/components/Map'
+import MenuSideBar from './src/components/menu'
 
-class SideBar extends Component {
 
-  render() {
-    return (
-      <View style={[styles.container, { backgroundColor: '#fff' }]}>
-        <Text> <Icon name="rocket" size={30} color="#900" />Conteúdo side bar</Text>
-      </View>
-    );
-  }
-};
 
 export default class App extends Component {
 
@@ -33,18 +24,20 @@ export default class App extends Component {
     return (
       <Drawer
         ref={(ref) => { this.drawer = ref; }}
-        content={<SideBar navigator={this.navigator} />}
+        content={<MenuSideBar navigator={this.navigator} />}
         onClose={() => this.closeDrawer()}>
         <Container>
           <Header style={styles.header}>
             <Container style={styles.container_menu}>
               <Icon onPress={() => this.openDrawer()} name="bars" size={30} style={styles.menu} />
             </Container>
+            <View style={styles.appNameContainer}>
+              <Text style={styles.appName}>You Safe</Text>
+            </View>
           </Header>
           <Map></Map>
         </Container>
       </Drawer>
-
     );
   }
 }
@@ -58,7 +51,8 @@ const styles = StyleSheet.create({
   },
   menu: {
     color: '#ffffff',
-    marginTop: 7
+    marginTop: 7,
+    marginLeft: 15
   },
   container_menu: {
     backgroundColor: '#1E90FF',
@@ -66,5 +60,16 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#1E90FF',
+  },
+  appNameContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: '30%'
+  },
+  appName: {
+    fontSize: 30,
+    color: '#ffffff',
+    fontWeight: 'bold',
   }
 });
