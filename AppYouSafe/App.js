@@ -148,7 +148,7 @@ export default class App extends Component<{}> {
 
   componentDidMount() {
     // current ip network that are you use // 
-    axios.get('http://192.168.3.128:3000/latlonCarSteal')
+    axios.get('http://172.20.10.6:3000/latlonCarSteal')
       .then(res => {
         this.location = res.data;
       })

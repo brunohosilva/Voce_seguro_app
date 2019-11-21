@@ -5,9 +5,9 @@ const results = [];
 
 exports.connectDataBase = function (req, res) {
     const con = mysql.createConnection({
-        host: 'ubuntu@ec2-54-233-130-162.sa-east-1.compute.amazonaws.com',
-        user: 'root',
-        password: 'yousafe',
+        host: 'yousafe-db.cyob7khpg6i0.sa-east-1.rds.amazonaws.com',
+        user: 'admin',
+        password: 'yousafe123',
         database: 'YouSafe'
     });
 
@@ -20,10 +20,9 @@ exports.connectDataBase = function (req, res) {
                 const longitude = position.LONGITUDE.replace(/\,/g, '.')
                 const rua = position.LOGRADOURO
                 if (position.LATITUDE !== null) {
-                    console.log(longitude, latitude, rua)
-                    con.query("INSERT INTO crimes(latitude,longitude,crime) VALUES(${parseFloat(latitude)},${parseFloat(longitude)},'furto de veiculo')", function (err, result, fields) {
+                    con.query(`INSERT INTO crimes(latitude,longitude,crime) VALUES(${parseFloat(latitude)},${parseFloat(longitude)},'furto de veiculo')`, function (err, result) {
                         if (err) throw err;
-                        console.log(result);
+                        // console.log(result);
                     })
                 }
             })
