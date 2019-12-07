@@ -1,46 +1,42 @@
 import React, { Component } from 'react';
 import {
   Text,
-  StyleSheet,
-  Dimensions,
+  StyleSheet
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { Drawer, Container, Header, View} from 'native-base';
+import { View} from 'native-base';
 import Map from './src/components/Map'
-import MenuSideBar from './src/components/menu'
-
-
+import Map2 from './src/components/map2'
+import { createSwitchNavigator, createAppContainer } from 'react-navigation'
+import { createDrawerNavigator } from 'react-navigation-drawer'; 
 
 export default class App extends Component {
-
-  closeDrawer = () => {
-    this.drawer._root.close()
-  };
-  openDrawer = () => {
-    this.drawer._root.open()
-  };
-
   render() {
     return (
-      <Drawer
-        ref={(ref) => { this.drawer = ref; }}
-        content={<MenuSideBar navigator={this.navigator} />}
-        onClose={() => this.closeDrawer()}>
-        <Container>
-          <Header style={styles.header}>
-            <Container style={styles.container_menu}>
-              <Icon onPress={() => this.openDrawer()} name="bars" size={30} style={styles.menu} />
-            </Container>
-            <View style={styles.appNameContainer}>
-              <Text style={styles.appName}>You Safe</Text>
-            </View>
-          </Header>
-          <Map></Map>
-        </Container>
-      </Drawer>
+      <AppContainer/>
     );
   }
 }
+
+class Mapa1 extends Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <Map />
+      </View>
+    )
+  }
+}
+
+class Mapa2 extends Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <Map2 />
+      </View>
+    )
+  }
+}
+
 
 const styles = StyleSheet.create({
   container: {
@@ -49,27 +45,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  menu: {
-    color: '#ffffff',
-    marginTop: 7,
-    marginLeft: 15
-  },
-  container_menu: {
-    backgroundColor: '#1E90FF',
-    width: Dimensions.get('window').width,
-  },
-  header: {
-    backgroundColor: '#1E90FF',
-  },
-  appNameContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: '30%'
-  },
-  appName: {
-    fontSize: 30,
-    color: '#ffffff',
-    fontWeight: 'bold',
-  }
 });
+
+
+const appDrawerNavigator = createDrawerNavigator({
+  'Roubo de celular': {
+    screen:Mapa1
+  },
+  'Roubo de carro': {
+    screen:Mapa2
+  },
+}, {
+  drawerBackgroundColor: '#1E90FF',
+  contentOptions: {
+    activeTintColor: 'white',
+    itemsContainerStyle: {
+      marginVertical: 0,
+    },
+    iconContainerStyle: {
+      opacity: 1
+    }
+  }
+})
+
+const AppSwitchNavigator = createSwitchNavigator({
+  Dasboard: { screen: appDrawerNavigator }
+});
+
+const AppContainer = createAppContainer(AppSwitchNavigator)

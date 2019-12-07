@@ -16,7 +16,7 @@ import * as Permissions from 'expo-permissions';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-export default class Map extends Component {
+export default class Map2 extends Component {
 
   constructor(props) {
     super(props);
@@ -33,7 +33,7 @@ export default class Map extends Component {
 
   componentDidMount() {
     // current ip network that are you use // 
-    axios.get('http://192.168.15.10:3000/latlonPhoneSteal')
+    axios.get('http://192.168.15.10:3000/latlonCarSteal')
       .then(res => {
         this.location = res.data;
       })
@@ -83,7 +83,6 @@ export default class Map extends Component {
       region: this.current_Location()
     });
   }
-  
 
   render() {
 
@@ -124,7 +123,7 @@ export default class Map extends Component {
               key={id}
               coordinate={marker.coordinates}
               title={marker.title}
-              image={require('../icon/icon_phone_rob.png')}
+              image={require('../icon/stolecarmin.png')}
             />
           ))}
         </MapView>
@@ -222,7 +221,7 @@ const styles = StyleSheet.create({
   btnCloseModal: {
     position: 'absolute',
     right: 0,
-    fontSize:30,
+    fontSize:40,
     color: "#ffffff"
     // ver o botão de fechar
   },
