@@ -33,7 +33,7 @@ export default class Map2 extends Component {
 
   componentDidMount() {
     // current ip network that are you use // 
-    axios.get('http://192.168.15.10:3000/latlonCarSteal')
+    axios.get('http://192.168.15.15:3000/latlonCarSteal')
       .then(res => {
         this.location = res.data;
       })
